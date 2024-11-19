@@ -75,6 +75,11 @@ import instagram from "./socials/instagram.svg";
 import telegram from "./socials/telegram.svg";
 import twitter from "./socials/twitter.svg";
 
+import earth from "./my/earth.svg"
+import earth_wall from "./my/earth_wall.jpg"
+import deer from "./my/deer.jpg"
+import earth_wall2 from "./my/earth_wall2.jpg"
+
 export {
   brainwave,
   check,
@@ -144,4 +149,10 @@ export {
   instagram,
   telegram,
   twitter,
+
+  earth,
+  earth_wall,
+  deer,
+  earth_wall2,
 };
+
