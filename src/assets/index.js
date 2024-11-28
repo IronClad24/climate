@@ -79,6 +79,8 @@ import earth from "./my/earth.svg"
 import earth_wall from "./my/earth_wall.jpg"
 import deer from "./my/deer.jpg"
 import earth_wall2 from "./my/earth_wall2.jpg"
+import earth_wall3 from "./my/earth_wall3.jpg"
+import earth_wall4 from "./my/earth_wall4.jpg"
 
 export {
   brainwave,
@@ -154,5 +156,8 @@ export {
   earth_wall,
   deer,
   earth_wall2,
+  earth_wall3,
+  earth_wall4,
+  
 };
 

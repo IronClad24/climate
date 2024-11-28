@@ -1,5 +1,5 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="100%" viewBox="220 40 1100 700" enable-background="new 0 0 782 731" xml:space="preserve">
+	 width="100%" viewBox="220 40 1310 700" enable-background="new 0 0 782 731" xml:space="preserve">
 <path fill="#3B81ED" opacity="1.000000" stroke="none" 
 	d="
 M520.177917,458.981476 
@@ -278,6 +278,6 @@ M268.255493,313.433380
 	C291.423004,300.321869 291.165863,314.914062 290.861237,330.017303 
 	C280.831818,328.300262 274.034607,321.853546 268.255493,313.433380 
 z"/>
-<text x="590" y="465" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="#ffffff">Climate</text>
+<text x="590" y="465" font-family="Arial, sans-serif" font-size="180" font-weight="bold" fill="#ffffff">EcoSphere</text>
 
 </svg>
