@@ -1,10 +1,11 @@
 import { BackgroundCircles, Gradient } from "./design/Hero";
-import React, { useRef, useState } from 'react';
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Button from './Button';
+import GoogleIcon from '../assets/my/icons8-google-48.svg'; // Add your Google icon path
 import Section from "./Section";
-import { auth } from '../Firebase'; // Adjust path to your Firebase.jsx
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../Firebase';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -16,6 +17,15 @@ const Login = () => {
     });
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
+
+    // Clear error message after 5 seconds
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => setError(null), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
 
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -33,7 +43,7 @@ const Login = () => {
         const { email, password } = formData;
 
         if (!email || !password) {
-            setError('Please enter both email and password.');
+            setError('Please fill in all fields.');
             setLoading(false);
             return;
         }
@@ -43,40 +53,53 @@ const Login = () => {
             const user = userCredential.user;
 
             if (!user.emailVerified) {
-                setError('Please verify your email before logging in. Check your inbox for the verification link.');
-                await auth.signOut(); // Sign out the user if email isn't verified
+                setError('Please verify your email first. Check your inbox (and spam folder) for the verification link.');
+                await auth.signOut();
                 setLoading(false);
                 return;
             }
 
             console.log('Logged in successfully:', user);
             setFormData({ email: '', password: '' });
-            navigate('/'); // Redirect to home page on successful login
+            navigate('/', { state: { loginSuccess: true } });
         } catch (error) {
-            let errorMessage = 'An error occurred during login.';
-            switch (error.code) {
-                case 'auth/user-not-found':
-                    errorMessage = 'No account found with this email.';
-                    break;
-                case 'auth/wrong-password':
-                    errorMessage = 'Incorrect password. Please try again.';
-                    break;
-                case 'auth/invalid-email':
-                    errorMessage = 'Please enter a valid email address.';
-                    break;
-                case 'auth/too-many-requests':
-                    errorMessage = 'Too many login attempts. Please try again later.';
-                    break;
-                case 'auth/user-disabled':
-                    errorMessage = 'This account has been disabled. Please contact support.';
-                    break;
-                default:
-                    errorMessage = error.message;
-            }
-            setError(errorMessage);
+            const errorMessages = {
+                'auth/user-not-found': 'No account found with this email. Want to sign up instead?',
+                'auth/wrong-password': 'Incorrect password. Try again or reset your password.',
+                'auth/invalid-email': 'Please enter a valid email address.',
+                'auth/too-many-requests': 'Too many attempts. Please wait a bit and try again.',
+                'auth/user-disabled': 'This account has been disabled. Contact support for help.',
+                'auth/invalid-credential': 'Invalid credentials. Please check your email and password.'
+            };
+            setError(errorMessages[error.code] || 'Login failed. Please try again later.');
             console.error('Login error:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        setError(null);
+        setGoogleLoading(true);
+
+        try {
+            const googleProvider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+
+            console.log('Logged in with Google:', user);
+            navigate('/', { state: { loginSuccess: true } });
+        } catch (error) {
+            const errorMessages = {
+                'auth/account-exists-with-different-credential': 'This email is already linked to another login method.',
+                'auth/popup-closed-by-user': 'Login window closed. Please try again.',
+                'auth/popup-blocked': 'Popup blocked by browser. Please allow popups and try again.',
+                'auth/operation-not-allowed': 'Google login is not enabled. Contact support.'
+            };
+            setError(errorMessages[error.code] || 'Google login failed. Please try again.');
+            console.error('Google login error:', error);
+        } finally {
+            setGoogleLoading(false);
         }
     };
 
@@ -91,7 +114,7 @@ const Login = () => {
             <div className="container relative" ref={parallaxRef}>
                 <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[4rem] md:mb-20 lg:mb:[6rem]">
                     <h1 className="h1 mb-6">
-                        Welcome Back to EcoSphere
+                        Welcome Back to AIHorizon
                     </h1>
                     <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8">
                         Log in to continue your journey towards a sustainable future
@@ -109,8 +132,8 @@ const Login = () => {
                                             value={formData.email}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 bg-n-9/40 backdrop-blur border border-n-1/10 rounded-xl 
-                                            text-n-2 focus:outline-none focus:border-n-2/50"
-                                            disabled={loading}
+                                            text-n-2 focus:outline-none focus:border-n-2/50 disabled:opacity-70"
+                                            disabled={loading || googleLoading}
                                         />
                                     </div>
                                     <div>
@@ -121,25 +144,50 @@ const Login = () => {
                                             value={formData.password}
                                             onChange={handleChange}
                                             className="w-full px-4 py-3 bg-n-9/40 backdrop-blur border border-n-1/10 rounded-xl 
-                                            text-n-2 focus:outline-none focus:border-n-2/50"
-                                            disabled={loading}
+                                            text-n-2 focus:outline-none focus:border-n-2/50 disabled:opacity-70"
+                                            disabled={loading || googleLoading}
                                         />
                                     </div>
                                     {error && (
-                                        <div className="w-full text-red-500 bg-white text-center py-2 rounded-xl">
+                                        <div className="w-full text-red-500 bg-white text-center py-2 rounded-xl text-sm">
                                             {error}
                                         </div>
                                     )}
-                                    <Button white className="w-full" disabled={loading}>
+                                    <Button 
+                                        white 
+                                        className="w-full" 
+                                        disabled={loading || googleLoading}
+                                    >
                                         {loading ? 'Logging In...' : 'Log In'}
                                     </Button>
                                 </form>
-                                <div className="mt-4 text-n-2 text-sm">
-                                    <a href="/forgot-password" className="hover:text-n-1 transition-colors">
+
+                                <div className="mt-6">
+                                    <Button 
+                                        white 
+                                        className="w-full" 
+                                        onClick={handleGoogleLogin}
+                                        disabled={loading || googleLoading}
+                                    >
+                                        <div className="flex items-center justify-center">
+                                            <img src={GoogleIcon} alt="Google" className="w-6 h-6 mr-2" />
+                                            {googleLoading ? 'Logging In...' : 'Log In with Google'}
+                                        </div>
+                                    </Button>
+                                </div>
+
+                                <div className="mt-4 text-n-2 text-sm flex justify-center gap-2">
+                                    <a 
+                                        href="/forgot-password" 
+                                        className="hover:text-n-1 transition-colors"
+                                    >
                                         Forgot Password?
                                     </a>
-                                    <span className="mx-2">•</span>
-                                    <a href="/signup" className="hover:text-n-1 transition-colors">
+                                    <span>•</span>
+                                    <a 
+                                        href="/signup" 
+                                        className="hover:text-n-1 transition-colors"
+                                    >
                                         Create Account
                                     </a>
                                 </div>

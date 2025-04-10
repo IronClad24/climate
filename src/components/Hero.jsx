@@ -28,7 +28,7 @@ const Hero = () => {
                         Empowering you with insights to navigate today’s weather and shape tomorrow’s climate future.
 
                     </h1>
-                    <div className="inline-block relative h1 mb-4">EcoSphere{" "}
+                    <div className="inline-block relative h1 mb-4">AIHorizon{" "}
                         <img src={curve} className="absolute top-full left-0 w-full xl:-mt-2" width={624} height={28}
                             alt="Curve" />
                     </div>
@@ -91,4 +91,4 @@ const Hero = () => {
     );
 };
 
-export default Hero
+export default Hero;

@@ -4,6 +4,7 @@ import Benefits from './components/Benefits';
 import Button from './components/Button';
 import ButtonGradient from './assets/svg/ButtonGradient';
 import Chart from './components/Chart';
+import Features from './components/Features';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -12,7 +13,7 @@ import Model from './components/Model';
 import React from "react";
 import Roadmap from './components/Roadmap';
 import Signup from './components/Signup';
-import Weather from './components/Weather'
+import Weather from './components/Weather';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/chart" element={<Chart />} />
           <Route path="/model" element={<Model />} />
+          <Route path="/features" element={<Features />} />
         </Routes>
         <Footer />
       </div>

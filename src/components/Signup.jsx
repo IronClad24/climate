@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Button from './Button';
 import GoogleIcon from '../assets/my/icons8-google-48.svg';
 import Section from "./Section";
-import { auth } from '../Firebase'; // Adjust path to your Firebase.jsx
+import { auth } from '../Firebase';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
@@ -117,7 +117,6 @@ const Signup = () => {
         }
     };
 
-    // Rest of your Signup component remains unchanged
     return (
         <Section
             className="pt-[10rem] -mt-[5.25] overflow-hidden"
@@ -128,7 +127,7 @@ const Signup = () => {
         >
             <div className="container relative" ref={parallaxRef}>
                 <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[4rem] md:mb-20 lg:mb:[6rem]">
-                    <h1 className="h1 mb-6">Join EcoSphere Today</h1>
+                    <h1 className="h1 mb-6">Join AIHorizon Today</h1>
                     <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8">
                         Create your account and start making a difference for our planet
                     </p>

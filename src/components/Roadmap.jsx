@@ -14,7 +14,7 @@ const Roadmap = () => (
 
       <div className="relative grid gap-6 md:grid-cols-2 md:gap-4 md:pb-[7rem]">
         {roadmap.map((item) => {
-          const status = item.status === "done" ? "Done" : "In progress";
+          const status = item.status === "done" ? "Done" : "Done";
 
           return (
             <div
@@ -40,7 +40,7 @@ const Roadmap = () => (
                     <div className="flex items-center px-4 py-1 bg-n-1 rounded text-n-8">
                       <img
                         className="mr-2.5"
-                        src={item.status === "done" ? check2 : loading1}
+                        src={item.status === "done" ? check2 : check2}
                         width={16}
                         height={16}
                         alt={status}
@@ -70,7 +70,7 @@ const Roadmap = () => (
       </div>
 
       <div className="flex justify-center mt-12 md:mt-15 xl:mt-20">
-        <Button href="/roadmap">Our roadmap</Button>
+        <Button href="/">Our roadmap</Button>
       </div>
     </div>
   </Section>
